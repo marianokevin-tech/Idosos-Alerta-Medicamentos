@@ -325,7 +325,7 @@
   <h1>💊 Meus Medicamentos</h1>
   <p class="subtitulo">Adicione seus remédios e horários</p>
 
-  <input type="text" id="remedio" placeholder="Nome do remédio (ex: Losartana)">
+  <input type="text" id="remedio" placeholder="Nome do remédio (ex: Insulina; Losartana; Dipirona. )">
   <input type="time" id="horario">
 
   <!-- Botão de frequência -->
@@ -370,9 +370,12 @@
   <div id="lista"></div>
 
   <h2>📍 Farmácias, Drogarias e UBS</h2>
-  <p style="font-size: 12px; color: #888; margin-bottom: 10px;">🔍 Digite o nome do local ou bairro para buscar</p>
-  <input type="text" id="buscaLocal" placeholder="🔍 Buscar (ex: Cajuru, Centro, Nissei...)">
-  <div id="listaLocais"></div>
+<p style="font-size: 12px; color: #888; margin-bottom: 10px;">🔍 Digite o nome do local ou bairro e clique em buscar</p>
+<div style="display: flex; gap: 10px; margin-bottom: 15px;">
+  <input type="text" id="buscaLocal" placeholder="🔍 Ex: Cajuru, Centro, Nissei..." style="flex: 1; margin-bottom: 0;">
+  <button onclick="buscarLocais()" style="width: auto; background-color: #3498db; padding: 15px 20px;">🔍 BUSCAR</button>
+</div>
+<div id="listaLocais"></div>
 
   <button class="btn-emergencia" onclick="ligarEmergencia()">
     🚨 EMERGÊNCIA - SAMU 192 🚨
@@ -764,7 +767,19 @@ function verificarHorarios() {
 // INICIALIZAÇÃO
 // ============================================
 
-document.getElementById("buscaLocal").addEventListener("input", renderizarLocais);
+// Busca apenas quando clicar no botão
+function buscarLocais() {
+  renderizarLocais();
+}
+
+// Remover o evento automático de busca
+// document.getElementById("buscaLocal").addEventListener("input", renderizarLocais);
+
+// Para limpar a busca e mostrar todos
+function limparBusca() {
+  document.getElementById("buscaLocal").value = "";
+  renderizarLocais();
+}
 
 carregarDados();
 renderizarLocais();
