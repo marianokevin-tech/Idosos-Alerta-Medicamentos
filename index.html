@@ -119,6 +119,12 @@
       margin-top: 5px;
     }
 
+    .frequencia {
+      font-size: 14px;
+      color: #667eea;
+      margin-top: 5px;
+    }
+
     .empty {
       text-align: center;
       padding: 40px;
@@ -193,6 +199,61 @@
       font-size: 20px;
     }
 
+    /* Opções de frequência */
+    .opcoes-frequencia {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 15px;
+      margin-bottom: 15px;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .dias-semana {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .dia-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .intervalo-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .intervalo-input {
+      width: 80px;
+      margin-bottom: 0;
+    }
+
+    .btn-frequencia {
+      background-color: #3498db;
+      margin-bottom: 15px;
+    }
+
     @media (max-width: 600px) {
       .container {
         padding: 15px;
@@ -224,16 +285,52 @@
   <h1>💊 Meus Medicamentos</h1>
   <p class="subtitulo">Adicione seus remédios e horários</p>
 
-  <input type="text" id="remedio" placeholder="Nome do remédio (ex: Losartana)">
+  <input type="text" id="remedio" placeholder="Nome do remédio (ex: Insulina; Dipirona; Losartana. )">
   <input type="time" id="horario">
+
+  <!-- Botão de frequência -->
+  <button class="btn-frequencia" onclick="toggleFrequencia()" id="btnFrequencia">
+    🔄 Frequência: Todos os dias
+  </button>
+
+  <!-- Opções de frequência (oculto inicialmente) -->
+  <div id="opcoesFrequencia" style="display: none;" class="opcoes-frequencia">
+    <div class="radio-group">
+      <label>
+        <input type="radio" name="frequencia" value="diario" checked> 📅 Todos os dias
+      </label>
+      <label>
+        <input type="radio" name="frequencia" value="dias_especificos"> 📆 Dias específicos da semana
+      </label>
+      <label>
+        <input type="radio" name="frequencia" value="dias_alternados"> 🔄 Dias alternados (dia sim, dia não)
+      </label>
+    </div>
+    
+    <div id="diasEspecificos" style="display: none;" class="dias-semana">
+      <label class="dia-checkbox"><input type="checkbox" value="0"> Domingo</label>
+      <label class="dia-checkbox"><input type="checkbox" value="1"> Segunda</label>
+      <label class="dia-checkbox"><input type="checkbox" value="2"> Terça</label>
+      <label class="dia-checkbox"><input type="checkbox" value="3"> Quarta</label>
+      <label class="dia-checkbox"><input type="checkbox" value="4"> Quinta</label>
+      <label class="dia-checkbox"><input type="checkbox" value="5"> Sexta</label>
+      <label class="dia-checkbox"><input type="checkbox" value="6"> Sábado</label>
+    </div>
+    
+    <div id="diasAlternados" style="display: none;" class="intervalo-group">
+      <label>Intervalo:</label>
+      <input type="number" id="intervaloDias" min="1" max="30" value="1" class="intervalo-input">
+      <span>dia(s)</span>
+    </div>
+  </div>
 
   <button onclick="adicionarMedicamento()">✅ ADICIONAR REMÉDIO</button>
 
   <h2>📋 Seus Remédios</h2>
   <div id="lista"></div>
 
-  <h2>📍 Farmácias e Hospitais</h2>
-  <input type="text" id="buscaLocal" placeholder="🔍 Buscar local">
+  <h2>📍 Farmácias e UBS</h2>
+  <input type="text" id="buscaLocal" placeholder="🔍 Buscar farmácia ou UBS">
   <div id="listaLocais"></div>
 
   <button class="btn-emergencia" onclick="ligarEmergencia()">
@@ -245,13 +342,111 @@
 
 <script>
 // ============================================
-// MEDICAMENTOS
+// VARIÁVEIS GLOBAIS
 // ============================================
 
 let medicamentos = [];
+let frequenciaSelecionada = "diario";
+let diasSemanaSelecionados = [];
+let intervaloDias = 1;
+
+// ============================================
+// FUNÇÕES DE FREQUÊNCIA
+// ============================================
+
+function toggleFrequencia() {
+  const div = document.getElementById("opcoesFrequencia");
+  if (div.style.display === "none") {
+    div.style.display = "block";
+    document.getElementById("btnFrequencia").textContent = "🔄 Frequência: ▼ Clique para fechar";
+  } else {
+    div.style.display = "none";
+    atualizarTextoBotaoFrequencia();
+  }
+}
+
+function atualizarTextoBotaoFrequencia() {
+  const radios = document.getElementsByName("frequencia");
+  for (let radio of radios) {
+    if (radio.checked) {
+      frequenciaSelecionada = radio.value;
+      break;
+    }
+  }
+  
+  let texto = "🔄 Frequência: ";
+  if (frequenciaSelecionada === "diario") {
+    texto += "Todos os dias";
+  } else if (frequenciaSelecionada === "dias_especificos") {
+    const dias = obterDiasSelecionados();
+    if (dias.length === 0) {
+      texto += "Nenhum dia selecionado";
+    } else {
+      texto += dias.map(d => getNomeDia(d)).join(", ");
+    }
+  } else if (frequenciaSelecionada === "dias_alternados") {
+    texto += `Dia sim, dia não (a cada ${intervaloDias} dia)`;
+  }
+  
+  document.getElementById("btnFrequencia").textContent = texto;
+}
+
+function getNomeDia(dia) {
+  const dias = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+  return dias[dia];
+}
+
+function obterDiasSelecionados() {
+  const checkboxes = document.querySelectorAll('#diasEspecificos input[type="checkbox"]');
+  const selecionados = [];
+  checkboxes.forEach(cb => {
+    if (cb.checked) selecionados.push(parseInt(cb.value));
+  });
+  return selecionados.sort();
+}
+
+// Monitorar mudanças nos radios
+document.addEventListener("DOMContentLoaded", function() {
+  const radios = document.getElementsByName("frequencia");
+  radios.forEach(radio => {
+    radio.addEventListener("change", function() {
+      const divDias = document.getElementById("diasEspecificos");
+      const divAlternados = document.getElementById("diasAlternados");
+      
+      if (this.value === "dias_especificos") {
+        divDias.style.display = "flex";
+        divAlternados.style.display = "none";
+      } else if (this.value === "dias_alternados") {
+        divDias.style.display = "none";
+        divAlternados.style.display = "flex";
+      } else {
+        divDias.style.display = "none";
+        divAlternados.style.display = "none";
+      }
+      atualizarTextoBotaoFrequencia();
+    });
+  });
+  
+  const checkboxesDias = document.querySelectorAll('#diasEspecificos input[type="checkbox"]');
+  checkboxesDias.forEach(cb => {
+    cb.addEventListener("change", atualizarTextoBotaoFrequencia);
+  });
+  
+  const intervaloInput = document.getElementById("intervaloDias");
+  if (intervaloInput) {
+    intervaloInput.addEventListener("change", function() {
+      intervaloDias = parseInt(this.value);
+      atualizarTextoBotaoFrequencia();
+    });
+  }
+});
+
+// ============================================
+// MEDICAMENTOS
+// ============================================
 
 function carregarDados() {
-  const salvos = localStorage.getItem("medicamentos_app");
+  const salvos = localStorage.getItem("medicamentos_app_v2");
   if (salvos) {
     medicamentos = JSON.parse(salvos);
   }
@@ -259,7 +454,7 @@ function carregarDados() {
 }
 
 function salvarDados() {
-  localStorage.setItem("medicamentos_app", JSON.stringify(medicamentos));
+  localStorage.setItem("medicamentos_app_v2", JSON.stringify(medicamentos));
 }
 
 function adicionarMedicamento() {
@@ -271,16 +466,43 @@ function adicionarMedicamento() {
     return;
   }
 
+  // Pegar frequência atual
+  const radios = document.getElementsByName("frequencia");
+  let frequencia = "diario";
+  for (let radio of radios) {
+    if (radio.checked) {
+      frequencia = radio.value;
+      break;
+    }
+  }
+  
+  let diasSemana = [];
+  let intervalo = 1;
+  
+  if (frequencia === "dias_especificos") {
+    diasSemana = obterDiasSelecionados();
+    if (diasSemana.length === 0) {
+      alert("⚠️ Selecione pelo menos um dia da semana!");
+      return;
+    }
+  } else if (frequencia === "dias_alternados") {
+    intervalo = parseInt(document.getElementById("intervaloDias").value);
+  }
+
   medicamentos.push({
     id: Date.now(),
     nome: nome,
     horario: horario,
+    frequencia: frequencia,
+    diasSemana: diasSemana,
+    intervalo: intervalo,
     data: new Date().toLocaleDateString()
   });
 
   salvarDados();
   renderizarLista();
 
+  // Limpar campos
   document.getElementById("remedio").value = "";
   document.getElementById("horario").value = "";
 
@@ -293,6 +515,17 @@ function removerMedicamento(id) {
     salvarDados();
     renderizarLista();
   }
+}
+
+function getTextoFrequencia(item) {
+  if (item.frequencia === "diario") {
+    return "📅 Todos os dias";
+  } else if (item.frequencia === "dias_especificos") {
+    return `📅 ${item.diasSemana.map(d => getNomeDia(d)).join(", ")}`;
+  } else if (item.frequencia === "dias_alternados") {
+    return `🔄 Dia sim, dia não (a cada ${item.intervalo} dia)`;
+  }
+  return "📅 Diário";
 }
 
 function renderizarLista() {
@@ -311,6 +544,7 @@ function renderizarLista() {
         <div class="info">
           <div class="nome">💊 ${m.nome}</div>
           <div class="horario">⏰ ${m.horario}</div>
+          <div class="frequencia">${getTextoFrequencia(m)}</div>
         </div>
         <button class="btn-remover" onclick="removerMedicamento(${m.id})">❌ Remover</button>
       </div>
@@ -320,17 +554,25 @@ function renderizarLista() {
 }
 
 // ============================================
-// LOCAIS DE SAÚDE
+// LOCAIS DE SAÚDE (APENAS FARMÁCIAS E UBS)
 // ============================================
 
 const locais = [
-  { nome: "UPA Boqueirão", endereco: "Rua Tobias de Macedo Júnior, 123 - Boqueirão, Curitiba - PR", telefone: "4133567890" },
-  { nome: "Hospital do Trabalhador", endereco: "Av. República Argentina, 2346 - Água Verde, Curitiba - PR", telefone: "4132154321" },
-  { nome: "UBS Cajuru", endereco: "Rua Nossa Senhora da Luz, 456 - Cajuru, Curitiba - PR", telefone: "4133781234" },
-  { nome: "Farmácia Popular Matriz", endereco: "Rua XV de Novembro, 789 - Centro, Curitiba - PR", telefone: "4132224567" },
-  { nome: "Farmácia 24h Centro", endereco: "Rua Comendador Araújo, 500 - Centro, Curitiba - PR", telefone: "4132227799" },
-  { nome: "UPA CIC", endereco: "Rua Marechal Otávio Saldanha Mazza, 567 - CIC, Curitiba - PR", telefone: "4133678901" },
-  { nome: "Hospital Evangélico", endereco: "Rua João Bettega, 123 - Bigorrilho, Curitiba - PR", telefone: "4133441234" }
+  // UBS (Unidades Básicas de Saúde)
+  { nome: "UBS Cajuru", endereco: "Rua Nossa Senhora da Luz, 456 - Cajuru, Curitiba - PR", telefone: "4133781234", tipo: "UBS" },
+  { nome: "UBS Bairro Novo", endereco: "Rua Eduardo Sprada, 5000 - Sítio Cercado, Curitiba - PR", telefone: "4133562244", tipo: "UBS" },
+  { nome: "UBS Pinheirinho", endereco: "Rua Winston Churchill, 2100 - Pinheirinho, Curitiba - PR", telefone: "4133783355", tipo: "UBS" },
+  { nome: "UBS Portão", endereco: "Rua Carlos Klemtz, 1700 - Portão, Curitiba - PR", telefone: "4133564466", tipo: "UBS" },
+  { nome: "UBS Boqueirão", endereco: "Rua da Cidadania, s/n - Boqueirão, Curitiba - PR", telefone: "4133567890", tipo: "UBS" },
+  { nome: "UBS Fazendinha", endereco: "Rua Carlos Klemtz, 1700 - Portão, Curitiba - PR", telefone: "4133567891", tipo: "UBS" },
+  
+  // Farmácias
+  { nome: "Farmácia Popular - Matriz", endereco: "Rua XV de Novembro, 789 - Centro, Curitiba - PR", telefone: "4132224567", tipo: "Farmácia" },
+  { nome: "Farmácia Popular - Boqueirão", endereco: "Av. Marechal Floriano Peixoto, 4500 - Boqueirão, Curitiba - PR", telefone: "4133565577", tipo: "Farmácia" },
+  { nome: "Farmácia Popular - Cajuru", endereco: "Av. Prefeito Maurício Fruet, 3000 - Cajuru, Curitiba - PR", telefone: "4133786688", tipo: "Farmácia" },
+  { nome: "Farmácia 24 Horas - Centro", endereco: "Rua Comendador Araújo, 500 - Centro, Curitiba - PR", telefone: "4132227799", tipo: "Farmácia" },
+  { nome: "Farmácia Nissei - Portão", endereco: "Av. República Argentina, 3200 - Portão, Curitiba - PR", telefone: "4133568899", tipo: "Farmácia" },
+  { nome: "Farmácia Panvel - Batel", endereco: "Rua Batel, 1800 - Batel, Curitiba - PR", telefone: "4133445566", tipo: "Farmácia" }
 ];
 
 function renderizarLocais() {
@@ -346,17 +588,18 @@ function renderizarLocais() {
   }
   
   if (filtrados.length === 0) {
-    div.innerHTML = '<div class="empty">📍 Nenhum local encontrado</div>';
+    div.innerHTML = '<div class="empty">📍 Nenhuma farmácia ou UBS encontrada</div>';
     return;
   }
   
   let html = "";
   for (let i = 0; i < filtrados.length; i++) {
     const l = filtrados[i];
+    const icone = l.tipo === "UBS" ? "🏛️" : "💊";
     html += `
       <div class="local-card">
-        <div class="local-nome">📍 ${l.nome}</div>
-        <div class="local-endereco">${l.endereco}</div>
+        <div class="local-nome">${icone} ${l.nome}</div>
+        <div class="local-endereco">📍 ${l.endereco}</div>
         <div class="botoes-acao">
           <button class="btn-mapa" onclick="abrirMapa('${l.endereco.replace(/'/g, "\\'")}')">🗺️ ABRIR MAPA</button>
           <a href="tel:${l.telefone}" class="btn-ligar">📞 LIGAR AGORA</a>
@@ -383,16 +626,35 @@ function ligarEmergencia() {
 }
 
 // ============================================
-// ALERTA DE HORÁRIO
+// ALERTA DE HORÁRIO (COM VERIFICAÇÃO DE DIAS)
 // ============================================
 
 function verificarHorarios() {
   const agora = new Date();
   const horaAtual = agora.toTimeString().slice(0,5);
+  const diaSemana = agora.getDay();
   
   for (let m of medicamentos) {
-    if (m.horario === horaAtual) {
-      alert(`🔔 HORA DO REMÉDIO!\n\n💊 ${m.nome}\n⏰ ${m.horario}\n\nNão esqueça de tomar!`);
+    if (m.horario !== horaAtual) continue;
+    
+    let deveAlertar = false;
+    
+    if (m.frequencia === "diario") {
+      deveAlertar = true;
+    } else if (m.frequencia === "dias_especificos") {
+      if (m.diasSemana.includes(diaSemana)) {
+        deveAlertar = true;
+      }
+    } else if (m.frequencia === "dias_alternados") {
+      // Verificar dias alternados (simplificado)
+      const diasDesdeInicio = Math.floor((agora - new Date(2024, 0, 1)) / (1000 * 60 * 60 * 24));
+      if (diasDesdeInicio % m.intervalo === 0) {
+        deveAlertar = true;
+      }
+    }
+    
+    if (deveAlertar) {
+      alert(`🔔 HORA DO REMÉDIO!\n\n💊 ${m.nome}\n⏰ ${m.horario}\n📅 ${getTextoFrequencia(m)}\n\nNão esqueça de tomar!`);
     }
   }
 }
