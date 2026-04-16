@@ -1,654 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>💊 Lembrete de Medicamentos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #667eea;
+      padding: 20px;
+      color: white;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 28px;
+    }
+
+    input, button {
+      font-size: 18px;
+      padding: 15px;
+      margin: 10px;
+      width: 90%;
+      border-radius: 10px;
+      border: none;
+    }
+
+    button {
+      background: #27ae60;
+      color: white;
+      font-weight: bold;
+    }
+
+    .card {
+      background: white;
+      color: black;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>💊 Lembrete de Remédios</h1>
+
+<input id="remedio" placeholder="Nome do remédio">
+<input id="horario" type="time">
+
+<button onclick="adicionar()">Adicionar</button>
+
+<div id="lista"></div>
+
 <script>
-export default {
-  data() {
-    return {
-      remedio: "",
-      horario: "",
-      frequencia: "diario", // simplificado: diario, manha, noite
-      lista: [],
+let lista = JSON.parse(localStorage.getItem("remedios")) || [];
 
-      // Locais de saúde (simplificado)
-      locais: [
-        {
-          nome: "UPA Boqueirão",
-          endereco: "Rua Tobias de Macedo Júnior, 123 - Boqueirão, Curitiba - PR",
-          telefone: "4133567890"
-        },
-        {
-          nome: "Hospital do Trabalhador",
-          endereco: "Av. República Argentina, 2346 - Água Verde, Curitiba - PR",
-          telefone: "4132154321"
-        },
-        {
-          nome: "UBS Cajuru",
-          endereco: "Rua Nossa Senhora da Luz, 456 - Cajuru, Curitiba - PR",
-          telefone: "4133781234"
-        },
-        {
-          nome: "Farmácia Popular - Matriz",
-          endereco: "Rua XV de Novembro, 789 - Centro, Curitiba - PR",
-          telefone: "4132224567"
-        },
-        {
-          nome: "Farmácia 24 Horas - Centro",
-          endereco: "Rua Comendador Araújo, 500 - Centro, Curitiba - PR",
-          telefone: "4132227799"
-        }
-      ],
-
-      enderecoBusca: "",
-      localizacaoUsuario: null,
-      carregandoLocalizacao: false,
-      erroLocalizacao: null
-    }
-  },
-
-  computed: {
-    locaisExibidos() {
-      let resultado = [...this.locais];
-      
-      if (this.enderecoBusca) {
-        resultado = resultado.filter(local => 
-          local.endereco.toLowerCase().includes(this.enderecoBusca.toLowerCase()) ||
-          local.nome.toLowerCase().includes(this.enderecoBusca.toLowerCase())
-        );
-      }
-      
-      return resultado;
-    },
-    
-    textoFrequencia() {
-      const textos = {
-        diario: "Todos os dias",
-        manha: "Somente de manhã",
-        noite: "Somente à noite"
-      };
-      return textos[this.frequencia];
-    }
-  },
-
-  methods: {
-    formatarTelefone(telefone) {
-      if (!telefone) return "";
-      const tel = telefone.toString();
-      if (tel.length === 10) {
-        return `(${tel.slice(0,2)}) ${tel.slice(2,6)}-${tel.slice(6)}`;
-      } else if (tel.length === 11) {
-        return `(${tel.slice(0,2)}) ${tel.slice(2,7)}-${tel.slice(7)}`;
-      }
-      return telefone;
-    },
-
-    adicionar() {
-      if (this.remedio && this.horario) {
-        const lembrete = {
-          remedio: this.remedio,
-          horario: this.horario,
-          frequencia: this.frequencia,
-          id: Date.now(),
-          dataCriacao: new Date().toLocaleDateString(),
-          ativo: true
-        };
-        
-        this.lista.push(lembrete);
-        this.salvar();
-        
-        // Limpar formulário
-        this.remedio = "";
-        this.horario = "";
-        this.frequencia = "diario";
-        
-        alert("✅ Remédio adicionado!");
-      } else {
-        alert("⚠️ Preencha o nome e o horário!");
-      }
-    },
-
-    remover(index) {
-      if (confirm("Tem certeza que deseja remover este lembrete?")) {
-        this.lista.splice(index, 1);
-        this.salvar();
-      }
-    },
-    
-    alternarAtivo(index) {
-      this.lista[index].ativo = !this.lista[index].ativo;
-      this.salvar();
-    },
-
-    salvar() {
-      localStorage.setItem("medicamentos", JSON.stringify(this.lista));
-    },
-
-    abrirMapa(endereco) {
-      const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(endereco)}`;
-      window.open(url, '_blank');
-    },
-
-    copiarEndereco(endereco) {
-      navigator.clipboard.writeText(endereco);
-      alert("Endereço copiado!");
-    },
-
-    obterLocalizacao() {
-      if (!navigator.geolocation) {
-        this.erroLocalizacao = "Seu navegador não suporta localização";
-        return;
-      }
-
-      this.carregandoLocalizacao = true;
-      this.erroLocalizacao = null;
-
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          this.localizacaoUsuario = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-          this.carregandoLocalizacao = false;
-          alert("✅ Localização ativada!");
-        },
-        (error) => {
-          this.carregandoLocalizacao = false;
-          this.erroLocalizacao = "📍 Ative a localização nas configurações";
-        }
-      );
-    },
-    
-    ligarEmergencia() {
-      if (confirm("🚨 ATENÇÃO! Deseja ligar para o SAMU 192?")) {
-        window.location.href = "tel:192";
-      }
-    },
-    
-    verificarHorarios() {
-      const agora = new Date();
-      const horaAtual = agora.toTimeString().slice(0,5);
-      const horaNumero = parseInt(horaAtual.split(':')[0]);
-      
-      this.lista.forEach(item => {
-        if (!item.ativo) return;
-        
-        const horarioItem = item.horario;
-        const horaItem = parseInt(horarioItem.split(':')[0]);
-        
-        let deveAlertar = false;
-        
-        if (item.frequencia === "diario" && item.horario === horaAtual) {
-          deveAlertar = true;
-        } else if (item.frequencia === "manha" && horaItem < 12 && item.horario === horaAtual) {
-          deveAlertar = true;
-        } else if (item.frequencia === "noite" && horaItem >= 18 && item.horario === horaAtual) {
-          deveAlertar = true;
-        }
-        
-        if (deveAlertar) {
-          alert(`🔔 HORA DO REMÉDIO!\n\n💊 ${item.remedio}\n⏰ ${item.horario}`);
-        }
-      });
-    }
-  },
-
-  mounted() {
-    const dados = localStorage.getItem("medicamentos");
-    if (dados) {
-      this.lista = JSON.parse(dados);
-    }
-    
-    // Verificar horários a cada minuto
-    setInterval(() => {
-      this.verificarHorarios();
-    }, 60000);
-    
-    // Pedir permissão para notificações
-    if ("Notification" in window) {
-      Notification.requestPermission();
-    }
-  }
+function salvar() {
+  localStorage.setItem("remedios", JSON.stringify(lista));
 }
+
+function adicionar() {
+  const nome = document.getElementById("remedio").value;
+  const hora = document.getElementById("horario").value;
+
+  if (!nome || !hora) {
+    alert("Preencha tudo!");
+    return;
+  }
+
+  lista.push({ nome, hora });
+  salvar();
+  renderizar();
+}
+
+function remover(index) {
+  lista.splice(index, 1);
+  salvar();
+  renderizar();
+}
+
+function renderizar() {
+  const div = document.getElementById("lista");
+  div.innerHTML = "";
+
+  lista.forEach((item, i) => {
+    div.innerHTML += `
+      <div class="card">
+        <b>${item.nome}</b><br>
+        ⏰ ${item.hora}<br><br>
+        <button onclick="remover(${i})">Remover</button>
+      </div>
+    `;
+  });
+}
+
+renderizar();
 </script>
 
-<template>
-  <div class="container">
-    <h1>💊 Meus Medicamentos</h1>
-    
-    <p class="subtitulo">Adicione seus remédios e horários</p>
-
-    <!-- FORMULÁRIO SIMPLES -->
-    <div class="form-card">
-      <h3>➕ Novo Remédio</h3>
-      
-      <input 
-        v-model="remedio" 
-        placeholder="Nome do remédio" 
-        type="text"
-        class="input-grande"
-      >
-      
-      <div class="form-row">
-        <div class="form-group">
-          <label>⏰ Horário</label>
-          <input type="time" v-model="horario" class="input-grande">
-        </div>
-        
-        <div class="form-group">
-          <label>📅 Quando tomar?</label>
-          <select v-model="frequencia" class="input-grande">
-            <option value="diario">Todos os dias</option>
-            <option value="manha">Somente de manhã</option>
-            <option value="noite">Somente à noite</option>
-          </select>
-        </div>
-      </div>
-      
-      <button @click="adicionar" class="btn-add">✅ ADICIONAR REMÉDIO</button>
-    </div>
-
-    <!-- LISTA DE REMÉDIOS -->
-    <div v-if="lista.length > 0" class="lista-container">
-      <h2>📋 Seus Remédios</h2>
-      
-      <div v-for="(item, index) in lista" :key="item.id" class="lembrete-card" :class="{ inativo: !item.ativo }">
-        <div class="lembrete-info">
-          <div class="lembrete-nome">💊 {{ item.remedio }}</div>
-          <div class="lembrete-horario">⏰ {{ item.horario }}</div>
-          <div class="lembrete-frequencia">{{ textoFrequencia }}</div>
-        </div>
-        
-        <div class="lembrete-actions">
-          <button @click="alternarAtivo(index)" class="toggle-btn" :class="{ ativo: item.ativo }">
-            {{ item.ativo ? '🔔 Ativo' : '🔕 Parado' }}
-          </button>
-          <button class="btn-remover" @click="remover(index)">❌ Remover</button>
-        </div>
-      </div>
-    </div>
-    
-    <div v-else class="empty-state">
-      <p>📭 Nenhum remédio cadastrado</p>
-      <p>Adicione seu primeiro remédio acima</p>
-    </div>
-
-    <!-- LOCAIS DE SAÚDE -->
-    <div class="locais-container">
-      <h2>📍 Farmácias e Hospitais</h2>
-      
-      <div class="location-status">
-        <button @click="obterLocalizacao" class="location-btn" :disabled="carregandoLocalizacao">
-          {{ carregandoLocalizacao ? '🔄 Buscando...' : '📍 Ativar minha localização' }}
-        </button>
-        <p v-if="erroLocalizacao" class="error-msg">{{ erroLocalizacao }}</p>
-      </div>
-
-      <input 
-        v-model="enderecoBusca" 
-        placeholder="🔍 Buscar local"
-        class="busca"
-      >
-
-      <div class="locais">
-        <div class="card" v-for="(local, index) in locaisExibidos" :key="index">
-          <h3>📍 {{ local.nome }}</h3>
-          <p class="endereco">{{ local.endereco }}</p>
-          
-          <div class="botoes-acao">
-            <button class="btn-mapa" @click="abrirMapa(local.endereco)">
-              🗺️ ABRIR MAPA
-            </button>
-            <a :href="'tel:' + local.telefone" class="btn-ligar">
-              📞 LIGAR AGORA
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- BOTÃO DE EMERGÊNCIA (GRANDE) -->
-    <button class="emergency-btn" @click="ligarEmergencia">
-      🚨 EMERGÊNCIA - SAMU 192 🚨
-    </button>
-    
-    <p class="footer-note">
-      💾 Seus remédios ficam salvos no celular
-    </p>
-  </div>
-</template>
-
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  padding: 15px;
-}
-
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  background: white;
-  border-radius: 25px;
-  padding: 25px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-}
-
-h1 {
-  color: #2c3e50;
-  text-align: center;
-  font-size: 28px;
-  margin-bottom: 10px;
-}
-
-.subtitulo {
-  text-align: center;
-  color: #7f8c8d;
-  margin-bottom: 25px;
-  font-size: 16px;
-}
-
-/* Botões GIGANTES para idosos */
-button {
-  font-size: 18px;
-  padding: 15px 20px;
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s;
-  min-height: 55px;
-}
-
-button:hover {
-  transform: scale(1.02);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-/* Inputs grandes */
-.input-grande {
-  padding: 15px;
-  font-size: 18px;
-  border: 2px solid #e0e0e0;
-  border-radius: 15px;
-  width: 100%;
-  margin-bottom: 15px;
-}
-
-.input-grande:focus {
-  outline: none;
-  border-color: #667eea;
-}
-
-/* Formulário */
-.form-card {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  padding: 20px;
-  border-radius: 20px;
-  margin-bottom: 30px;
-}
-
-.form-card h3 {
-  margin-bottom: 15px;
-  color: #2c3e50;
-  font-size: 20px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #2c3e50;
-  font-size: 16px;
-}
-
-.form-row {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 15px;
-  flex-wrap: wrap;
-}
-
-.form-row .form-group {
-  flex: 1;
-  min-width: 150px;
-}
-
-select {
-  cursor: pointer;
-}
-
-.btn-add {
-  background-color: #27ae60;
-  width: 100%;
-  font-size: 20px;
-  padding: 18px;
-  margin-top: 10px;
-}
-
-/* Lista de remédios */
-.lista-container {
-  margin-bottom: 30px;
-}
-
-.lista-container h2 {
-  margin-bottom: 15px;
-  color: #2c3e50;
-  font-size: 22px;
-}
-
-.lembrete-card {
-  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-  border: 2px solid #667eea30;
-  border-radius: 15px;
-  padding: 18px;
-  margin-bottom: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-
-.lembrete-card.inativo {
-  opacity: 0.5;
-  background: #f0f0f0;
-}
-
-.lembrete-nome {
-  font-size: 22px;
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-.lembrete-horario {
-  font-size: 20px;
-  color: #27ae60;
-  font-weight: bold;
-}
-
-.lembrete-frequencia {
-  font-size: 14px;
-  color: #667eea;
-  margin-top: 5px;
-}
-
-.lembrete-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.toggle-btn {
-  background-color: #3498db;
-  padding: 10px 18px;
-  font-size: 16px;
-}
-
-.toggle-btn.ativo {
-  background-color: #27ae60;
-}
-
-.btn-remover {
-  background-color: #e74c3c;
-  padding: 10px 18px;
-  font-size: 16px;
-}
-
-/* Estado vazio */
-.empty-state {
-  text-align: center;
-  padding: 40px;
-  background: #f8f9fa;
-  border-radius: 15px;
-  margin-bottom: 30px;
-  color: #7f8c8d;
-}
-
-.empty-state p {
-  margin: 5px 0;
-  font-size: 16px;
-}
-
-/* Locais */
-.locais-container {
-  margin-bottom: 30px;
-}
-
-.locais-container h2 {
-  margin-bottom: 15px;
-  color: #2c3e50;
-  font-size: 22px;
-}
-
-.location-status {
-  margin-bottom: 15px;
-}
-
-.location-btn {
-  background-color: #3498db;
-  width: 100%;
-  font-size: 18px;
-}
-
-.busca {
-  padding: 15px;
-  font-size: 18px;
-  border: 2px solid #e0e0e0;
-  border-radius: 15px;
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.locais {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.card {
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 15px;
-  padding: 18px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
-.card h3 {
-  color: #2c3e50;
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.endereco {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 15px;
-  line-height: 1.4;
-}
-
-.botoes-acao {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.btn-mapa {
-  background-color: #3498db;
-  flex: 1;
-  text-align: center;
-  text-decoration: none;
-  font-size: 16px;
-  padding: 12px;
-}
-
-.btn-ligar {
-  background-color: #27ae60;
-  color: white;
-  text-decoration: none;
-  text-align: center;
-  flex: 1;
-  padding: 12px;
-  border-radius: 15px;
-  font-weight: bold;
-  font-size: 16px;
-}
-
-/* Botão de emergência GIGANTE */
-.emergency-btn {
-  background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);
-  font-size: 22px;
-  padding: 25px;
-  width: 100%;
-  margin: 20px 0;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-}
-
-.emergency-btn:hover {
-  transform: scale(1.03);
-}
-
-.footer-note {
-  text-align: center;
-  font-size: 12px;
-  color: #888;
-  margin-top: 20px;
-}
-
-.error-msg {
-  color: #e74c3c;
-  margin-top: 10px;
-  font-size: 14px;
-  text-align: center;
-}
-
-@media (max-width: 600px) {
-  .container {
-    padding: 15px;
-  }
-  
-  .lembrete-nome {
-    font-size: 18px;
-  }
-  
-  .lembrete-horario {
-    font-size: 16px;
-  }
-  
-  button {
-    font-size: 16px;
-    padding: 12px;
-  }
-  
-  .emergency-btn {
-    font-size: 18px;
-    padding: 20px;
-  }
-  
-  .botoes-acao {
-    flex-direction: column;
-  }
-}
-</style>
+</body>
+</html>
