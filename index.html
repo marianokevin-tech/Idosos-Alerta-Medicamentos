@@ -2,102 +2,415 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#667eea">
   <title>💊 Lembrete de Medicamentos</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial;
-      background: #667eea;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
       padding: 20px;
-      color: white;
-      text-align: center;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 25px;
+      padding: 25px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
     }
 
     h1 {
+      color: #2c3e50;
+      text-align: center;
       font-size: 28px;
+      margin-bottom: 10px;
     }
 
-    input, button {
-      font-size: 18px;
+    .subtitulo {
+      text-align: center;
+      color: #7f8c8d;
+      margin-bottom: 25px;
+      font-size: 14px;
+    }
+
+    input, select {
       padding: 15px;
-      margin: 10px;
-      width: 90%;
-      border-radius: 10px;
-      border: none;
+      font-size: 18px;
+      border: 2px solid #e0e0e0;
+      border-radius: 15px;
+      width: 100%;
+      margin-bottom: 15px;
+      font-family: inherit;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
     }
 
     button {
-      background: #27ae60;
+      padding: 15px 20px;
+      font-size: 18px;
+      background-color: #27ae60;
       color: white;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
       font-weight: bold;
+      width: 100%;
+      transition: all 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.02);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .btn-remover {
+      background-color: #e74c3c;
+      margin-top: 0;
+      width: auto;
+      padding: 10px 20px;
+    }
+
+    .btn-emergencia {
+      background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);
+      font-size: 20px;
+      padding: 20px;
+      margin-top: 20px;
     }
 
     .card {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      border-radius: 15px;
+      padding: 18px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .info {
+      flex: 1;
+    }
+
+    .nome {
+      font-size: 20px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .horario {
+      font-size: 18px;
+      color: #27ae60;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 40px;
+      color: #7f8c8d;
+      background: #f8f9fa;
+      border-radius: 15px;
+    }
+
+    .local-card {
       background: white;
-      color: black;
+      border: 1px solid #e0e0e0;
+      border-radius: 15px;
       padding: 15px;
-      margin: 10px 0;
+      margin-bottom: 12px;
+    }
+
+    .local-nome {
+      font-size: 18px;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+
+    .local-endereco {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 12px;
+    }
+
+    .btn-ligar {
+      background-color: #27ae60;
+      display: inline-block;
+      text-align: center;
+      text-decoration: none;
+      padding: 10px;
       border-radius: 10px;
+      font-size: 16px;
+      color: white;
+      flex: 1;
+    }
+
+    .btn-mapa {
+      background-color: #3498db;
+      display: inline-block;
+      text-align: center;
+      text-decoration: none;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 16px;
+      color: white;
+      flex: 1;
+      border: none;
+      cursor: pointer;
+    }
+
+    .botoes-acao {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #888;
+      margin-top: 20px;
+    }
+
+    h2 {
+      margin: 20px 0 10px 0;
+      color: #2c3e50;
+      font-size: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 15px;
+      }
+      
+      .nome {
+        font-size: 18px;
+      }
+      
+      button {
+        font-size: 16px;
+        padding: 12px;
+      }
+      
+      .btn-remover {
+        width: 100%;
+      }
+      
+      .card {
+        flex-direction: column;
+        text-align: center;
+      }
     }
   </style>
 </head>
 
 <body>
+<div class="container">
+  <h1>💊 Meus Medicamentos</h1>
+  <p class="subtitulo">Adicione seus remédios e horários</p>
 
-<h1>💊 Lembrete de Remédios</h1>
+  <input type="text" id="remedio" placeholder="Nome do remédio (ex: Losartana)">
+  <input type="time" id="horario">
 
-<input id="remedio" placeholder="Nome do remédio">
-<input id="horario" type="time">
+  <button onclick="adicionarMedicamento()">✅ ADICIONAR REMÉDIO</button>
 
-<button onclick="adicionar()">Adicionar</button>
+  <h2>📋 Seus Remédios</h2>
+  <div id="lista"></div>
 
-<div id="lista"></div>
+  <h2>📍 Farmácias e Hospitais</h2>
+  <input type="text" id="buscaLocal" placeholder="🔍 Buscar local">
+  <div id="listaLocais"></div>
+
+  <button class="btn-emergencia" onclick="ligarEmergencia()">
+    🚨 EMERGÊNCIA - SAMU 192 🚨
+  </button>
+
+  <p class="footer">💾 Seus remédios ficam salvos no celular</p>
+</div>
 
 <script>
-let lista = JSON.parse(localStorage.getItem("remedios")) || [];
+// ============================================
+// MEDICAMENTOS
+// ============================================
 
-function salvar() {
-  localStorage.setItem("remedios", JSON.stringify(lista));
+let medicamentos = [];
+
+function carregarDados() {
+  const salvos = localStorage.getItem("medicamentos_app");
+  if (salvos) {
+    medicamentos = JSON.parse(salvos);
+  }
+  renderizarLista();
 }
 
-function adicionar() {
-  const nome = document.getElementById("remedio").value;
-  const hora = document.getElementById("horario").value;
+function salvarDados() {
+  localStorage.setItem("medicamentos_app", JSON.stringify(medicamentos));
+}
 
-  if (!nome || !hora) {
-    alert("Preencha tudo!");
+function adicionarMedicamento() {
+  const nome = document.getElementById("remedio").value;
+  const horario = document.getElementById("horario").value;
+
+  if (!nome || !horario) {
+    alert("⚠️ Preencha o nome do remédio e o horário!");
     return;
   }
 
-  lista.push({ nome, hora });
-  salvar();
-  renderizar();
+  medicamentos.push({
+    id: Date.now(),
+    nome: nome,
+    horario: horario,
+    data: new Date().toLocaleDateString()
+  });
+
+  salvarDados();
+  renderizarLista();
+
+  document.getElementById("remedio").value = "";
+  document.getElementById("horario").value = "";
+
+  alert("✅ Remédio adicionado!");
 }
 
-function remover(index) {
-  lista.splice(index, 1);
-  salvar();
-  renderizar();
+function removerMedicamento(id) {
+  if (confirm("Tem certeza que quer remover este remédio?")) {
+    medicamentos = medicamentos.filter(m => m.id !== id);
+    salvarDados();
+    renderizarLista();
+  }
 }
 
-function renderizar() {
+function renderizarLista() {
   const div = document.getElementById("lista");
-  div.innerHTML = "";
+  
+  if (medicamentos.length === 0) {
+    div.innerHTML = '<div class="empty">📭 Nenhum remédio cadastrado<br>Adicione seu primeiro remédio acima</div>';
+    return;
+  }
 
-  lista.forEach((item, i) => {
-    div.innerHTML += `
+  let html = "";
+  for (let i = 0; i < medicamentos.length; i++) {
+    const m = medicamentos[i];
+    html += `
       <div class="card">
-        <b>${item.nome}</b><br>
-        ⏰ ${item.hora}<br><br>
-        <button onclick="remover(${i})">Remover</button>
+        <div class="info">
+          <div class="nome">💊 ${m.nome}</div>
+          <div class="horario">⏰ ${m.horario}</div>
+        </div>
+        <button class="btn-remover" onclick="removerMedicamento(${m.id})">❌ Remover</button>
       </div>
     `;
-  });
+  }
+  div.innerHTML = html;
 }
 
-renderizar();
-</script>
+// ============================================
+// LOCAIS DE SAÚDE
+// ============================================
 
+const locais = [
+  { nome: "UPA Boqueirão", endereco: "Rua Tobias de Macedo Júnior, 123 - Boqueirão, Curitiba - PR", telefone: "4133567890" },
+  { nome: "Hospital do Trabalhador", endereco: "Av. República Argentina, 2346 - Água Verde, Curitiba - PR", telefone: "4132154321" },
+  { nome: "UBS Cajuru", endereco: "Rua Nossa Senhora da Luz, 456 - Cajuru, Curitiba - PR", telefone: "4133781234" },
+  { nome: "Farmácia Popular Matriz", endereco: "Rua XV de Novembro, 789 - Centro, Curitiba - PR", telefone: "4132224567" },
+  { nome: "Farmácia 24h Centro", endereco: "Rua Comendador Araújo, 500 - Centro, Curitiba - PR", telefone: "4132227799" },
+  { nome: "UPA CIC", endereco: "Rua Marechal Otávio Saldanha Mazza, 567 - CIC, Curitiba - PR", telefone: "4133678901" },
+  { nome: "Hospital Evangélico", endereco: "Rua João Bettega, 123 - Bigorrilho, Curitiba - PR", telefone: "4133441234" }
+];
+
+function renderizarLocais() {
+  const busca = document.getElementById("buscaLocal").value.toLowerCase();
+  const div = document.getElementById("listaLocais");
+  
+  let filtrados = locais;
+  if (busca) {
+    filtrados = locais.filter(l => 
+      l.nome.toLowerCase().includes(busca) || 
+      l.endereco.toLowerCase().includes(busca)
+    );
+  }
+  
+  if (filtrados.length === 0) {
+    div.innerHTML = '<div class="empty">📍 Nenhum local encontrado</div>';
+    return;
+  }
+  
+  let html = "";
+  for (let i = 0; i < filtrados.length; i++) {
+    const l = filtrados[i];
+    html += `
+      <div class="local-card">
+        <div class="local-nome">📍 ${l.nome}</div>
+        <div class="local-endereco">${l.endereco}</div>
+        <div class="botoes-acao">
+          <button class="btn-mapa" onclick="abrirMapa('${l.endereco.replace(/'/g, "\\'")}')">🗺️ ABRIR MAPA</button>
+          <a href="tel:${l.telefone}" class="btn-ligar">📞 LIGAR AGORA</a>
+        </div>
+      </div>
+    `;
+  }
+  div.innerHTML = html;
+}
+
+function abrirMapa(endereco) {
+  const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(endereco)}`;
+  window.open(url, '_blank');
+}
+
+// ============================================
+// EMERGÊNCIA
+// ============================================
+
+function ligarEmergencia() {
+  if (confirm("🚨 ATENÇÃO! Deseja ligar para o SAMU 192?")) {
+    window.location.href = "tel:192";
+  }
+}
+
+// ============================================
+// ALERTA DE HORÁRIO
+// ============================================
+
+function verificarHorarios() {
+  const agora = new Date();
+  const horaAtual = agora.toTimeString().slice(0,5);
+  
+  for (let m of medicamentos) {
+    if (m.horario === horaAtual) {
+      alert(`🔔 HORA DO REMÉDIO!\n\n💊 ${m.nome}\n⏰ ${m.horario}\n\nNão esqueça de tomar!`);
+    }
+  }
+}
+
+// ============================================
+// INICIALIZAÇÃO
+// ============================================
+
+document.getElementById("buscaLocal").addEventListener("input", renderizarLocais);
+
+carregarDados();
+renderizarLocais();
+
+setInterval(verificarHorarios, 60000);
+
+if ("Notification" in window) {
+  Notification.requestPermission();
+}
+</script>
 </body>
 </html>
