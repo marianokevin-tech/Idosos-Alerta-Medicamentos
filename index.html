@@ -215,7 +215,6 @@
       font-size: 20px;
     }
 
-    /* Opções de frequência */
     .opcoes-frequencia {
       background: #f8f9fa;
       padding: 15px;
@@ -270,7 +269,6 @@
       margin-bottom: 15px;
     }
 
-    /* Badge de tipo */
     .tipo-badge {
       display: inline-block;
       padding: 4px 10px;
@@ -325,15 +323,13 @@
   <h1>💊 Meus Medicamentos</h1>
   <p class="subtitulo">Adicione seus remédios e horários</p>
 
-  <input type="text" id="remedio" placeholder="Nome do remédio (ex: Insulina; Losartana; Dipirona. )">
+  <input type="text" id="remedio" placeholder="Nome do remédio (ex: Insulina, Losartana, Dipirona )">
   <input type="time" id="horario">
 
-  <!-- Botão de frequência -->
   <button class="btn-frequencia" onclick="toggleFrequencia()" id="btnFrequencia">
     🔄 Frequência: Todos os dias
   </button>
 
-  <!-- Opções de frequência (oculto inicialmente) -->
   <div id="opcoesFrequencia" style="display: none;" class="opcoes-frequencia">
     <div class="radio-group">
       <label>
@@ -370,18 +366,21 @@
   <div id="lista"></div>
 
   <h2>📍 Farmácias, Drogarias e UBS</h2>
-<p style="font-size: 12px; color: #888; margin-bottom: 10px;">🔍 Digite o nome do local ou bairro e clique em buscar</p>
-<div style="display: flex; gap: 10px; margin-bottom: 15px;">
-  <input type="text" id="buscaLocal" placeholder="🔍 Ex: Cajuru, Centro, Nissei..." style="flex: 1; margin-bottom: 0;">
-  <button onclick="buscarLocais()" style="width: auto; background-color: #3498db; padding: 15px 20px;">🔍 BUSCAR</button>
-</div>
-<div id="listaLocais"></div>
+  <p style="font-size: 12px; color: #888; margin-bottom: 10px;">🔍 Digite o nome do local ou bairro e clique em buscar</p>
+  
+  <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+    <input type="text" id="buscaLocal" placeholder="🔍 Ex: Cajuru, Centro, Nissei..." style="flex: 1; margin-bottom: 0;">
+    <button onclick="buscarLocais()" style="width: auto; background-color: #3498db; padding: 15px 20px;">🔍 BUSCAR</button>
+    <button onclick="limparBusca()" style="width: auto; background-color: #95a5a6; padding: 15px 20px;">🗑️ LIMPAR</button>
+  </div>
+  
+  <div id="listaLocais"></div>
 
   <button class="btn-emergencia" onclick="ligarEmergencia()">
     🚨 EMERGÊNCIA - SAMU 192 🚨
   </button>
 
-  <p class="footer">💾 Seus remédios ficam salvos no celular<br>📌 Clique em qualquer local para ver ações</p>
+  <p class="footer">💾 Seus remédios ficam salvos no celular<br>📌 Clique em qualquer local para abrir o mapa</p>
 </div>
 
 <script>
@@ -500,7 +499,6 @@ function obterDiasSelecionados() {
   return selecionados.sort();
 }
 
-// Monitorar mudanças nos radios
 document.addEventListener("DOMContentLoaded", function() {
   const radios = document.getElementsByName("frequencia");
   radios.forEach(radio => {
@@ -662,7 +660,7 @@ function formatarTelefone(telefone) {
 }
 
 // ============================================
-// FUNÇÕES DOS LOCAIS
+// FUNÇÕES DOS LOCAIS (COM BOTÃO DE BUSCA)
 // ============================================
 
 function renderizarLocais() {
@@ -689,12 +687,12 @@ function renderizarLocais() {
     const icone = l.tipo === "UBS" ? "🏛️" : "💊";
     const tipoClass = l.tipo === "UBS" ? "tipo-ubs" : "tipo-farmacia";
     html += `
-      <div class="local-card" onclick="mostrarAcoesLocal('${l.nome.replace(/'/g, "\\'")}', '${l.endereco.replace(/'/g, "\\'")}', '${l.telefone}')">
+      <div class="local-card" onclick="abrirMapa('${l.endereco.replace(/'/g, "\\'")}')">
         <div class="local-nome">${icone} ${l.nome}</div>
         <div class="local-endereco">📍 ${l.endereco}</div>
         <div class="local-telefone">📞 ${formatarTelefone(l.telefone)}</div>
         <span class="tipo-badge ${tipoClass}">${l.tipo}</span>
-        <div class="botoes-acao" id="acoes-${i}" style="display: none;">
+        <div class="botoes-acao">
           <button class="btn-mapa" onclick="event.stopPropagation(); abrirMapa('${l.endereco.replace(/'/g, "\\'")}')">🗺️ ABRIR MAPA</button>
           <button class="btn-ligar" onclick="event.stopPropagation(); ligarLocal('${l.telefone}')">📞 LIGAR</button>
         </div>
@@ -704,11 +702,13 @@ function renderizarLocais() {
   div.innerHTML = html;
 }
 
-function mostrarAcoesLocal(nome, endereco, telefone) {
-  // Esta função é chamada ao clicar no card
-  // Os botões já estão sendo mostrados/ocultos via CSS
-  // Como simplificação, vamos abrir diretamente o mapa
-  abrirMapa(endereco);
+function buscarLocais() {
+  renderizarLocais();
+}
+
+function limparBusca() {
+  document.getElementById("buscaLocal").value = "";
+  renderizarLocais();
 }
 
 function abrirMapa(endereco) {
@@ -750,45 +750,4 @@ function verificarHorarios() {
       if (m.diasSemana && m.diasSemana.includes(diaSemana)) {
         deveAlertar = true;
       }
-    } else if (m.frequencia === "dias_alternados") {
-      const diasDesdeInicio = Math.floor((agora - new Date(2024, 0, 1)) / (1000 * 60 * 60 * 24));
-      if (diasDesdeInicio % (m.intervalo || 1) === 0) {
-        deveAlertar = true;
-      }
-    }
-    
-    if (deveAlertar) {
-      alert(`🔔 HORA DO REMÉDIO!\n\n💊 ${m.nome}\n⏰ ${m.horario}\n📅 ${getTextoFrequencia(m)}\n\nNão esqueça de tomar!`);
-    }
-  }
-}
-
-// ============================================
-// INICIALIZAÇÃO
-// ============================================
-
-// Busca apenas quando clicar no botão
-function buscarLocais() {
-  renderizarLocais();
-}
-
-// Remover o evento automático de busca
-// document.getElementById("buscaLocal").addEventListener("input", renderizarLocais);
-
-// Para limpar a busca e mostrar todos
-function limparBusca() {
-  document.getElementById("buscaLocal").value = "";
-  renderizarLocais();
-}
-
-carregarDados();
-renderizarLocais();
-
-setInterval(verificarHorarios, 60000);
-
-if ("Notification" in window) {
-  Notification.requestPermission();
-}
-</script>
-</body>
-</html>
+    } else if (m.frequencia === "dias
