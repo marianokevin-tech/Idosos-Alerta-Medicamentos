@@ -376,9 +376,14 @@
   
   <div id="listaLocais"></div>
 
-  <button class="btn-emergencia" onclick="ligarEmergencia()">
-    🚨 EMERGÊNCIA - SAMU 192 🚨
+<div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
+  <button class="btn-emergencia" onclick="ligarEmergencia()" style="flex: 1; background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);">
+    🚑 SAMU 192
   </button>
+  <button class="btn-emergencia" onclick="ligarBombeiros()" style="flex: 1; background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);">
+    🔥 BOMBEIROS 193
+  </button>
+</div>
 
   <p class="footer">💾 Seus remédios ficam salvos no celular<br>📌 Clique em qualquer local para abrir o mapa</p>
 </div>
@@ -729,7 +734,11 @@ function ligarEmergencia() {
     window.location.href = "tel:192";
   }
 }
-
+function ligarBombeiros() {
+  if (confirm("🔥 ATENÇÃO! Deseja ligar para o Corpo de Bombeiros 193?\n\nEmergências: incêndio, resgate, acidentes de trânsito, salvamento.")) {
+    window.location.href = "tel:193";
+  }
+}
 // ============================================
 // ALERTA DE HORÁRIO
 // ============================================
