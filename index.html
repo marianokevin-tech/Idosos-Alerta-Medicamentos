@@ -7,11 +7,7 @@
   <title>💊 Lembrete de Medicamentos</title>
   
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
@@ -29,19 +25,8 @@
       box-shadow: 0 20px 60px rgba(0,0,0,0.3);
     }
 
-    h1 {
-      color: #2c3e50;
-      text-align: center;
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-
-    .subtitulo {
-      text-align: center;
-      color: #7f8c8d;
-      margin-bottom: 25px;
-      font-size: 14px;
-    }
+    h1 { color: #2c3e50; text-align: center; font-size: 28px; margin-bottom: 10px; }
+    .subtitulo { text-align: center; color: #7f8c8d; margin-bottom: 25px; font-size: 14px; }
 
     input, select {
       padding: 15px;
@@ -50,12 +35,6 @@
       border-radius: 15px;
       width: 100%;
       margin-bottom: 15px;
-      font-family: inherit;
-    }
-
-    input:focus, select:focus {
-      outline: none;
-      border-color: #667eea;
     }
 
     button {
@@ -71,23 +50,12 @@
       transition: all 0.3s;
     }
 
-    button:hover {
-      transform: scale(1.02);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
+    button:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
 
     .btn-remover {
       background-color: #e74c3c;
-      margin-top: 0;
       width: auto;
       padding: 10px 20px;
-    }
-
-    .btn-emergencia {
-      background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);
-      font-size: 20px;
-      padding: 20px;
-      margin-top: 20px;
     }
 
     .card {
@@ -102,28 +70,10 @@
       gap: 10px;
     }
 
-    .info {
-      flex: 1;
-    }
-
-    .nome {
-      font-size: 20px;
-      font-weight: bold;
-      color: #2c3e50;
-    }
-
-    .horario {
-      font-size: 18px;
-      color: #27ae60;
-      font-weight: bold;
-      margin-top: 5px;
-    }
-
-    .frequencia {
-      font-size: 14px;
-      color: #667eea;
-      margin-top: 5px;
-    }
+    .info { flex: 1; }
+    .nome { font-size: 20px; font-weight: bold; color: #2c3e50; }
+    .horario { font-size: 18px; color: #27ae60; font-weight: bold; margin-top: 5px; }
+    .frequencia { font-size: 14px; color: #667eea; margin-top: 5px; }
 
     .empty {
       text-align: center;
@@ -139,40 +89,18 @@
       border-radius: 15px;
       padding: 15px;
       margin-bottom: 12px;
+      cursor: pointer;
       transition: all 0.3s;
-      cursor: pointer;
     }
 
-    .local-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
+    .local-card:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    .local-nome { font-size: 18px; font-weight: bold; color: #2c3e50; margin-bottom: 8px; }
+    .local-endereco { font-size: 14px; color: #555; margin-bottom: 8px; }
+    .local-telefone { font-size: 14px; color: #27ae60; font-weight: bold; margin-bottom: 12px; }
 
-    .local-nome {
-      font-size: 18px;
-      font-weight: bold;
-      color: #2c3e50;
-      margin-bottom: 8px;
-    }
-
-    .local-endereco {
-      font-size: 14px;
-      color: #555;
-      margin-bottom: 8px;
-    }
-
-    .local-telefone {
-      font-size: 14px;
-      color: #27ae60;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
-
-    .btn-ligar {
-      background-color: #27ae60;
+    .btn-ligar, .btn-mapa {
       display: inline-block;
       text-align: center;
-      text-decoration: none;
       padding: 10px;
       border-radius: 10px;
       font-size: 16px;
@@ -181,39 +109,12 @@
       border: none;
       cursor: pointer;
     }
+    .btn-mapa { background-color: #3498db; }
+    .btn-ligar { background-color: #27ae60; }
 
-    .btn-mapa {
-      background-color: #3498db;
-      display: inline-block;
-      text-align: center;
-      text-decoration: none;
-      padding: 10px;
-      border-radius: 10px;
-      font-size: 16px;
-      color: white;
-      flex: 1;
-      border: none;
-      cursor: pointer;
-    }
-
-    .botoes-acao {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .footer {
-      text-align: center;
-      font-size: 12px;
-      color: #888;
-      margin-top: 20px;
-    }
-
-    h2 {
-      margin: 20px 0 10px 0;
-      color: #2c3e50;
-      font-size: 20px;
-    }
+    .botoes-acao { display: flex; gap: 10px; margin-top: 10px; }
+    .footer { text-align: center; font-size: 12px; color: #888; margin-top: 20px; }
+    h2 { margin: 20px 0 10px 0; color: #2c3e50; font-size: 20px; }
 
     .opcoes-frequencia {
       background: #f8f9fa;
@@ -222,98 +123,25 @@
       margin-bottom: 15px;
     }
 
-    .radio-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
+    .radio-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+    .radio-group label { display: flex; align-items: center; gap: 10px; font-size: 16px; cursor: pointer; }
+    .dias-semana { display: flex; flex-wrap: wrap; gap: 10px; margin: 15px 0; }
+    .dia-checkbox { display: flex; align-items: center; gap: 5px; font-size: 14px; cursor: pointer; }
+    .intervalo-group { display: flex; align-items: center; gap: 10px; margin: 15px 0; }
+    .intervalo-input { width: 80px; margin-bottom: 0; }
+    .btn-frequencia { background-color: #3498db; margin-bottom: 15px; }
 
-    .radio-group label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .dias-semana {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 15px 0;
-    }
-
-    .dia-checkbox {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    .intervalo-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 15px 0;
-    }
-
-    .intervalo-input {
-      width: 80px;
-      margin-bottom: 0;
-    }
-
-    .btn-frequencia {
-      background-color: #3498db;
-      margin-bottom: 15px;
-    }
-
-    .tipo-badge {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: bold;
-      margin-top: 5px;
-    }
-
-    .tipo-ubs {
-      background-color: #3498db;
-      color: white;
-    }
-
-    .tipo-farmacia {
-      background-color: #27ae60;
-      color: white;
-    }
+    .tipo-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+    .tipo-ubs { background-color: #3498db; color: white; }
+    .tipo-farmacia { background-color: #27ae60; color: white; }
 
     @media (max-width: 600px) {
-      .container {
-        padding: 15px;
-      }
-      
-      .nome {
-        font-size: 18px;
-      }
-      
-      button {
-        font-size: 16px;
-        padding: 12px;
-      }
-      
-      .btn-remover {
-        width: 100%;
-      }
-      
-      .card {
-        flex-direction: column;
-        text-align: center;
-      }
-      
-      .botoes-acao {
-        flex-direction: column;
-      }
+      .container { padding: 15px; }
+      .nome { font-size: 18px; }
+      button { font-size: 16px; padding: 12px; }
+      .btn-remover { width: 100%; }
+      .card { flex-direction: column; text-align: center; }
+      .botoes-acao { flex-direction: column; }
     }
   </style>
 </head>
@@ -323,7 +151,7 @@
   <h1>💊 Meus Medicamentos</h1>
   <p class="subtitulo">Adicione seus remédios e horários</p>
 
-  <input type="text" id="remedio" placeholder="Nome do remédio (ex: Insulina, Losartana, Dipirona )">
+  <input type="text" id="remedio" placeholder="Nome do remédio (ex: Insulina, Losartana, Dipirona)">
   <input type="time" id="horario">
 
   <button class="btn-frequencia" onclick="toggleFrequencia()" id="btnFrequencia">
@@ -332,15 +160,9 @@
 
   <div id="opcoesFrequencia" style="display: none;" class="opcoes-frequencia">
     <div class="radio-group">
-      <label>
-        <input type="radio" name="frequencia" value="diario" checked> 📅 Todos os dias
-      </label>
-      <label>
-        <input type="radio" name="frequencia" value="dias_especificos"> 📆 Dias específicos da semana
-      </label>
-      <label>
-        <input type="radio" name="frequencia" value="dias_alternados"> 🔄 Dias alternados (dia sim, dia não)
-      </label>
+      <label><input type="radio" name="frequencia" value="diario" checked> 📅 Todos os dias</label>
+      <label><input type="radio" name="frequencia" value="dias_especificos"> 📆 Dias específicos da semana</label>
+      <label><input type="radio" name="frequencia" value="dias_alternados"> 🔄 Dias alternados (dia sim, dia não)</label>
     </div>
     
     <div id="diasEspecificos" style="display: none;" class="dias-semana">
@@ -376,14 +198,14 @@
   
   <div id="listaLocais"></div>
 
-<div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
-  <button class="btn-emergencia" onclick="ligarEmergencia()" style="flex: 1; background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);">
-    🚑 SAMU 192
-  </button>
-  <button class="btn-emergencia" onclick="ligarBombeiros()" style="flex: 1; background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);">
-    🔥 BOMBEIROS 193
-  </button>
-</div>
+  <div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
+    <button class="btn-emergencia" onclick="ligarEmergencia()" style="flex: 1; background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);">
+      🚑 SAMU 192
+    </button>
+    <button class="btn-emergencia" onclick="ligarBombeiros()" style="flex: 1; background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);">
+      🔥 BOMBEIROS 193
+    </button>
+  </div>
 
   <p class="footer">💾 Seus remédios ficam salvos no celular<br>📌 Clique em qualquer local para abrir o mapa</p>
 </div>
@@ -392,72 +214,37 @@
 // ============================================
 // VARIÁVEIS GLOBAIS
 // ============================================
-
 let medicamentos = [];
-let frequenciaSelecionada = "diario";
-let diasSemanaSelecionados = [];
 let intervaloDias = 1;
 
 // ============================================
-// LOCAIS DE SAÚDE (ENDEREÇOS E TELEFONES REAIS)
+// LOCAIS DE SAÚDE (APENAS FARMÁCIAS E UBS - CURITIBA)
 // ============================================
-
 const locais = [
-  // UBS (Unidades Básicas de Saúde)
-  { nome: "UBS Bairro Novo", endereco: "Rua Eduardo Sprada, 5000 - Sítio Cercado", telefone: "4133562244", tipo: "UBS", bairro: "Sítio Cercado" },
-  { nome: "UBS Pinheirinho", endereco: "Rua Winston Churchill, 2100 - Pinheirinho", telefone: "4133783355", tipo: "UBS", bairro: "Pinheirinho" },
-  { nome: "UBS Portão", endereco: "Rua Carlos Klemtz, 1700 - Portão", telefone: "4133564466", tipo: "UBS", bairro: "Portão" },
-  { nome: "UBS Cajuru", endereco: "Rua Nossa Senhora da Luz, 456 - Cajuru", telefone: "4133781234", tipo: "UBS", bairro: "Cajuru" },
-  { nome: "UBS Boqueirão", endereco: "Avenida Marechal Floriano Peixoto, 4500 - Boqueirão", telefone: "4133567890", tipo: "UBS", bairro: "Boqueirão" },
-  { nome: "UBS CIC", endereco: "Rua Marechal Otávio Saldanha Mazza, 567 - CIC", telefone: "4133678901", tipo: "UBS", bairro: "CIC" },
-  { nome: "UBS Santa Felicidade", endereco: "Rua Santa Maria, 555 - Santa Felicidade", telefone: "4133791234", tipo: "UBS", bairro: "Santa Felicidade" },
-  { nome: "UBS Fazendinha", endereco: "Rua Carlos Klemtz, 1700 - Portão", telefone: "4133567891", tipo: "UBS", bairro: "Portão" },
-  
-  // Drogarias Nissei
-  { nome: "Drogaria Nissei - Centro", endereco: "Praça Rui Barbosa, 433 - Centro", telefone: "4132221234", tipo: "Farmácia", bairro: "Centro" },
-  { nome: "Drogaria Nissei - Água Verde", endereco: "Av. Iguaçu, 2619 - Água Verde", telefone: "4133431234", tipo: "Farmácia", bairro: "Água Verde" },
-  { nome: "Drogaria Nissei - Santa Felicidade", endereco: "Av. Manoel Ribas, 6437 - Santa Felicidade", telefone: "4133721234", tipo: "Farmácia", bairro: "Santa Felicidade" },
-  { nome: "Drogaria Nissei - Cabral", endereco: "Av. Anita Garibaldi, 1400 - Cabral", telefone: "4132531234", tipo: "Farmácia", bairro: "Cabral" },
-  { nome: "Drogaria Nissei - Bacacheri", endereco: "Av. Erasto Gaertner, 182 - Bacacheri", telefone: "4132981234", tipo: "Farmácia", bairro: "Bacacheri" },
-  { nome: "Drogaria Nissei - Mercês", endereco: "Rua Jacarezinho, 942 - Mercês", telefone: "4132431234", tipo: "Farmácia", bairro: "Mercês" },
-  { nome: "Drogaria Nissei - Seminário", endereco: "Rua Sete de Setembro, 6948 - Seminário", telefone: "4133421234", tipo: "Farmácia", bairro: "Seminário" },
-  { nome: "Drogaria Nissei - Hauer", endereco: "Av. Marechal Floriano Peixoto, 5666 - Hauer", telefone: "4133761234", tipo: "Farmácia", bairro: "Hauer" },
-  
-  // Drogarias Pague Menos
-  { nome: "Drogaria Pague Menos - 24h", endereco: "Rua Munhoz da Rocha, 974 - Cabral", telefone: "4132545678", tipo: "Farmácia", bairro: "Cabral" },
-  { nome: "Drogaria Pague Menos - Portão", endereco: "Av. República Argentina, 3200 - Portão", telefone: "4133555678", tipo: "Farmácia", bairro: "Portão" },
-  
-  // Panvel Farmácias
-  { nome: "Panvel - Centro", endereco: "Rua Marechal Deodoro, 261 - Centro", telefone: "4132247890", tipo: "Farmácia", bairro: "Centro" },
-  { nome: "Panvel - Batel", endereco: "Av. Sete de Setembro, 6923 - Batel", telefone: "4133437890", tipo: "Farmácia", bairro: "Batel" },
-  { nome: "Panvel - Juvevê", endereco: "Rua Itupava, 753 - Juvevê", telefone: "4132547890", tipo: "Farmácia", bairro: "Juvevê" },
-  { nome: "Panvel - Mercês", endereco: "Rua Brigadeiro Franco, 420 - Mercês", telefone: "4132447890", tipo: "Farmácia", bairro: "Mercês" },
-  { nome: "Panvel - Cabral", endereco: "Av. Munhoz da Rocha, 944 - Cabral", telefone: "4132541234", tipo: "Farmácia", bairro: "Cabral" },
-  
-  // Hiperfarma
-  { nome: "Farmácia Hiperfarma - Cajuru (24h)", endereco: "Rua Filipinas, 165 - Cajuru", telefone: "4133788765", tipo: "Farmácia", bairro: "Cajuru" },
-  { nome: "Farmácia Hiperfarma - Boqueirão", endereco: "Rua Dr. Bley Zornig, 755 - Boqueirão", telefone: "4133569876", tipo: "Farmácia", bairro: "Boqueirão" },
-  { nome: "Farmácia Hiperfarma - CIC", endereco: "Rua Nossa Senhora da Cabeça, 2050 - CIC", telefone: "4133677654", tipo: "Farmácia", bairro: "CIC" },
-  { nome: "Farmácia Hiperfarma - Pinheirinho", endereco: "Rua Laudelino Ferreira Lopes, 2939 - Pinheirinho", telefone: "4133786543", tipo: "Farmácia", bairro: "Pinheirinho" },
-  
-  // Farmácias Populares
-  { nome: "Farmácia Popular - Matriz", endereco: "Rua XV de Novembro, 789 - Centro", telefone: "4132224567", tipo: "Farmácia", bairro: "Centro" },
-  { nome: "Farmácia Popular - Boqueirão", endereco: "Av. Marechal Floriano Peixoto, 4500 - Boqueirão", telefone: "4133565577", tipo: "Farmácia", bairro: "Boqueirão" },
-  { nome: "Farmácia 24h - Centro", endereco: "Rua Comendador Araújo, 500 - Centro", telefone: "4132227799", tipo: "Farmácia", bairro: "Centro" },
-  
-  // Outras Farmácias
-  { nome: "Farmácia Jardinfarma", endereco: "Av. Vereador Toaldo Túlio, 2306", telefone: "4133569988", tipo: "Farmácia", bairro: "Curitiba" }
+  { nome: "UBS Bairro Novo", endereco: "Rua Eduardo Sprada, 5000 - Sítio Cercado, Curitiba - PR", telefone: "4133562244", tipo: "UBS", bairro: "Sítio Cercado" },
+  { nome: "UBS Pinheirinho", endereco: "Rua Winston Churchill, 2100 - Pinheirinho, Curitiba - PR", telefone: "4133783355", tipo: "UBS", bairro: "Pinheirinho" },
+  { nome: "UBS Portão", endereco: "Rua Carlos Klemtz, 1700 - Portão, Curitiba - PR", telefone: "4133564466", tipo: "UBS", bairro: "Portão" },
+  { nome: "UBS Cajuru", endereco: "Rua Nossa Senhora da Luz, 456 - Cajuru, Curitiba - PR", telefone: "4133781234", tipo: "UBS", bairro: "Cajuru" },
+  { nome: "UBS Boqueirão", endereco: "Avenida Marechal Floriano Peixoto, 4500 - Boqueirão, Curitiba - PR", telefone: "4133567890", tipo: "UBS", bairro: "Boqueirão" },
+  { nome: "UBS CIC", endereco: "Rua Marechal Otávio Saldanha Mazza, 567 - CIC, Curitiba - PR", telefone: "4133678901", tipo: "UBS", bairro: "CIC" },
+  { nome: "UBS Santa Felicidade", endereco: "Rua Santa Maria, 555 - Santa Felicidade, Curitiba - PR", telefone: "4133791234", tipo: "UBS", bairro: "Santa Felicidade" },
+  { nome: "Drogaria Nissei - Centro", endereco: "Praça Rui Barbosa, 433 - Centro, Curitiba - PR", telefone: "4132221234", tipo: "Farmácia", bairro: "Centro" },
+  { nome: "Drogaria Nissei - Água Verde", endereco: "Av. Iguaçu, 2619 - Água Verde, Curitiba - PR", telefone: "4133431234", tipo: "Farmácia", bairro: "Água Verde" },
+  { nome: "Drogaria Nissei - Cabral", endereco: "Av. Anita Garibaldi, 1400 - Cabral, Curitiba - PR", telefone: "4132531234", tipo: "Farmácia", bairro: "Cabral" },
+  { nome: "Panvel - Centro", endereco: "Rua Marechal Deodoro, 261 - Centro, Curitiba - PR", telefone: "4132247890", tipo: "Farmácia", bairro: "Centro" },
+  { nome: "Panvel - Batel", endereco: "Av. Sete de Setembro, 6923 - Batel, Curitiba - PR", telefone: "4133437890", tipo: "Farmácia", bairro: "Batel" },
+  { nome: "Farmácia Popular - Matriz", endereco: "Rua XV de Novembro, 789 - Centro, Curitiba - PR", telefone: "4132224567", tipo: "Farmácia", bairro: "Centro" },
+  { nome: "Farmácia 24h - Centro", endereco: "Rua Comendador Araújo, 500 - Centro, Curitiba - PR", telefone: "4132227799", tipo: "Farmácia", bairro: "Centro" }
 ];
 
 // ============================================
 // FUNÇÕES DE FREQUÊNCIA
 // ============================================
-
 function toggleFrequencia() {
   const div = document.getElementById("opcoesFrequencia");
   if (div.style.display === "none") {
     div.style.display = "block";
-    document.getElementById("btnFrequencia").textContent = "🔄 Frequência: ▼ Clique para fechar";
+    document.getElementById("btnFrequencia").innerHTML = "🔄 Frequência: ▼ Clique para fechar";
   } else {
     div.style.display = "none";
     atualizarTextoBotaoFrequencia();
@@ -466,28 +253,20 @@ function toggleFrequencia() {
 
 function atualizarTextoBotaoFrequencia() {
   const radios = document.getElementsByName("frequencia");
+  let frequencia = "diario";
   for (let radio of radios) {
-    if (radio.checked) {
-      frequenciaSelecionada = radio.value;
-      break;
-    }
+    if (radio.checked) { frequencia = radio.value; break; }
   }
   
   let texto = "🔄 Frequência: ";
-  if (frequenciaSelecionada === "diario") {
-    texto += "Todos os dias";
-  } else if (frequenciaSelecionada === "dias_especificos") {
+  if (frequencia === "diario") texto += "Todos os dias";
+  else if (frequencia === "dias_especificos") {
     const dias = obterDiasSelecionados();
-    if (dias.length === 0) {
-      texto += "Nenhum dia selecionado";
-    } else {
-      texto += dias.map(d => getNomeDia(d)).join(", ");
-    }
-  } else if (frequenciaSelecionada === "dias_alternados") {
-    texto += `Dia sim, dia não (a cada ${intervaloDias} dia)`;
+    texto += dias.length ? dias.map(d => getNomeDia(d)).join(", ") : "Nenhum dia selecionado";
   }
+  else if (frequencia === "dias_alternados") texto += `Dia sim, dia não (a cada ${intervaloDias} dia)`;
   
-  document.getElementById("btnFrequencia").textContent = texto;
+  document.getElementById("btnFrequencia").innerHTML = texto;
 }
 
 function getNomeDia(dia) {
@@ -498,110 +277,48 @@ function getNomeDia(dia) {
 function obterDiasSelecionados() {
   const checkboxes = document.querySelectorAll('#diasEspecificos input[type="checkbox"]');
   const selecionados = [];
-  checkboxes.forEach(cb => {
-    if (cb.checked) selecionados.push(parseInt(cb.value));
-  });
+  checkboxes.forEach(cb => { if (cb.checked) selecionados.push(parseInt(cb.value)); });
   return selecionados.sort();
 }
-
-document.addEventListener("DOMContentLoaded", function() {
-  const radios = document.getElementsByName("frequencia");
-  radios.forEach(radio => {
-    radio.addEventListener("change", function() {
-      const divDias = document.getElementById("diasEspecificos");
-      const divAlternados = document.getElementById("diasAlternados");
-      
-      if (this.value === "dias_especificos") {
-        divDias.style.display = "flex";
-        divAlternados.style.display = "none";
-      } else if (this.value === "dias_alternados") {
-        divDias.style.display = "none";
-        divAlternados.style.display = "flex";
-      } else {
-        divDias.style.display = "none";
-        divAlternados.style.display = "none";
-      }
-      atualizarTextoBotaoFrequencia();
-    });
-  });
-  
-  const checkboxesDias = document.querySelectorAll('#diasEspecificos input[type="checkbox"]');
-  checkboxesDias.forEach(cb => {
-    cb.addEventListener("change", atualizarTextoBotaoFrequencia);
-  });
-  
-  const intervaloInput = document.getElementById("intervaloDias");
-  if (intervaloInput) {
-    intervaloInput.addEventListener("change", function() {
-      intervaloDias = parseInt(this.value);
-      atualizarTextoBotaoFrequencia();
-    });
-  }
-});
 
 // ============================================
 // MEDICAMENTOS
 // ============================================
-
 function carregarDados() {
   const salvos = localStorage.getItem("medicamentos_app_v2");
-  if (salvos) {
-    medicamentos = JSON.parse(salvos);
-  }
+  if (salvos) medicamentos = JSON.parse(salvos);
   renderizarLista();
 }
 
-function salvarDados() {
-  localStorage.setItem("medicamentos_app_v2", JSON.stringify(medicamentos));
-}
+function salvarDados() { localStorage.setItem("medicamentos_app_v2", JSON.stringify(medicamentos)); }
 
 function adicionarMedicamento() {
   const nome = document.getElementById("remedio").value;
   const horario = document.getElementById("horario").value;
-
-  if (!nome || !horario) {
-    alert("⚠️ Preencha o nome do remédio e o horário!");
-    return;
-  }
+  if (!nome || !horario) { alert("⚠️ Preencha o nome do remédio e o horário!"); return; }
 
   const radios = document.getElementsByName("frequencia");
   let frequencia = "diario";
-  for (let radio of radios) {
-    if (radio.checked) {
-      frequencia = radio.value;
-      break;
-    }
-  }
+  for (let radio of radios) { if (radio.checked) { frequencia = radio.value; break; } }
   
   let diasSemana = [];
   let intervalo = 1;
-  
   if (frequencia === "dias_especificos") {
     diasSemana = obterDiasSelecionados();
-    if (diasSemana.length === 0) {
-      alert("⚠️ Selecione pelo menos um dia da semana!");
-      return;
-    }
+    if (diasSemana.length === 0) { alert("⚠️ Selecione pelo menos um dia da semana!"); return; }
   } else if (frequencia === "dias_alternados") {
     intervalo = parseInt(document.getElementById("intervaloDias").value);
   }
 
   medicamentos.push({
-    id: Date.now(),
-    nome: nome,
-    horario: horario,
-    frequencia: frequencia,
-    diasSemana: diasSemana,
-    intervalo: intervalo,
-    data: new Date().toLocaleDateString()
+    id: Date.now(), nome: nome, horario: horario, frequencia: frequencia,
+    diasSemana: diasSemana, intervalo: intervalo, data: new Date().toLocaleDateString()
   });
 
   salvarDados();
   renderizarLista();
-
   document.getElementById("remedio").value = "";
   document.getElementById("horario").value = "";
-
   alert("✅ Remédio adicionado!");
 }
 
@@ -614,33 +331,27 @@ function removerMedicamento(id) {
 }
 
 function getTextoFrequencia(item) {
-  if (item.frequencia === "diario") {
-    return "📅 Todos os dias";
-  } else if (item.frequencia === "dias_especificos") {
-    return `📅 ${item.diasSemana.map(d => getNomeDia(d)).join(", ")}`;
-  } else if (item.frequencia === "dias_alternados") {
-    return `🔄 Dia sim, dia não (a cada ${item.intervalo} dia)`;
-  }
+  if (item.frequencia === "diario") return "📅 Todos os dias";
+  if (item.frequencia === "dias_especificos") return `📅 ${item.diasSemana.map(d => getNomeDia(d)).join(", ")}`;
+  if (item.frequencia === "dias_alternados") return `🔄 Dia sim, dia não (a cada ${item.intervalo} dia)`;
   return "📅 Diário";
 }
 
 function renderizarLista() {
   const div = document.getElementById("lista");
-  
   if (medicamentos.length === 0) {
     div.innerHTML = '<div class="empty">📭 Nenhum remédio cadastrado<br>Adicione seu primeiro remédio acima</div>';
     return;
   }
-
   let html = "";
-  for (let i = 0; i < medicamentos.length; i++) {
-    const m = medicamentos[i];
+  for (let m of medicamentos) {
     html += `
       <div class="card">
         <div class="info">
           <div class="nome">💊 ${m.nome}</div>
           <div class="horario">⏰ ${m.horario}</div>
           <div class="frequencia">${getTextoFrequencia(m)}</div>
+          <div class="frequencia" style="color: #888; font-size: 12px;">📅 Desde: ${m.data}</div>
         </div>
         <button class="btn-remover" onclick="removerMedicamento(${m.id})">❌ Remover</button>
       </div>
@@ -652,28 +363,23 @@ function renderizarLista() {
 // ============================================
 // FUNÇÃO PARA FORMATAR TELEFONE
 // ============================================
-
 function formatarTelefone(telefone) {
   if (!telefone) return "";
   const tel = telefone.toString();
-  if (tel.length === 10) {
-    return `(${tel.slice(0,2)}) ${tel.slice(2,6)}-${tel.slice(6)}`;
-  } else if (tel.length === 11) {
-    return `(${tel.slice(0,2)}) ${tel.slice(2,7)}-${tel.slice(7)}`;
-  }
+  if (tel.length === 10) return `(${tel.slice(0,2)}) ${tel.slice(2,6)}-${tel.slice(6)}`;
+  if (tel.length === 11) return `(${tel.slice(0,2)}) ${tel.slice(2,7)}-${tel.slice(7)}`;
   return telefone;
 }
 
 // ============================================
-// FUNÇÕES DOS LOCAIS (COM BOTÃO DE BUSCA)
+// FUNÇÕES DOS LOCAIS (CORRIGIDAS)
 // ============================================
-
 function renderizarLocais() {
   const busca = document.getElementById("buscaLocal").value.toLowerCase();
   const div = document.getElementById("listaLocais");
   
-  let filtrados = locais;
-  if (busca) {
+  let filtrados = [...locais];
+  if (busca && busca.trim() !== "") {
     filtrados = locais.filter(l => 
       l.nome.toLowerCase().includes(busca) || 
       l.endereco.toLowerCase().includes(busca) ||
@@ -687,8 +393,7 @@ function renderizarLocais() {
   }
   
   let html = "";
-  for (let i = 0; i < filtrados.length; i++) {
-    const l = filtrados[i];
+  for (let l of filtrados) {
     const icone = l.tipo === "UBS" ? "🏛️" : "💊";
     const tipoClass = l.tipo === "UBS" ? "tipo-ubs" : "tipo-farmacia";
     html += `
@@ -707,56 +412,69 @@ function renderizarLocais() {
   div.innerHTML = html;
 }
 
-function buscarLocais() {
-  renderizarLocais();
-}
-
-function limparBusca() {
-  document.getElementById("buscaLocal").value = "";
-  renderizarLocais();
-}
-
-function abrirMapa(endereco) {
-  const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(endereco)}`;
-  window.open(url, '_blank');
-}
-
-function ligarLocal(telefone) {
-  window.location.href = `tel:${telefone}`;
-}
+function buscarLocais() { renderizarLocais(); }
+function limparBusca() { document.getElementById("buscaLocal").value = ""; renderizarLocais(); }
+function abrirMapa(endereco) { window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(endereco)}`, '_blank'); }
+function ligarLocal(telefone) { window.location.href = `tel:${telefone}`; }
 
 // ============================================
 // EMERGÊNCIA
 // ============================================
-
 function ligarEmergencia() {
-  if (confirm("🚨 ATENÇÃO! Deseja ligar para o SAMU 192?")) {
-    window.location.href = "tel:192";
-  }
+  if (confirm("🚨 ATENÇÃO! Deseja ligar para o SAMU 192?")) window.location.href = "tel:192";
 }
 function ligarBombeiros() {
-  if (confirm("🔥 ATENÇÃO! Deseja ligar para o Corpo de Bombeiros 193?\n\nEmergências: incêndio, resgate, acidentes de trânsito, salvamento.")) {
-    window.location.href = "tel:193";
-  }
+  if (confirm("🔥 ATENÇÃO! Deseja ligar para o Corpo de Bombeiros 193?")) window.location.href = "tel:193";
 }
+
 // ============================================
 // ALERTA DE HORÁRIO
 // ============================================
-
 function verificarHorarios() {
   const agora = new Date();
   const horaAtual = agora.toTimeString().slice(0,5);
   const diaSemana = agora.getDay();
-  
   for (let m of medicamentos) {
     if (m.horario !== horaAtual) continue;
-    
     let deveAlertar = false;
-    
-    if (m.frequencia === "diario") {
-      deveAlertar = true;
-    } else if (m.frequencia === "dias_especificos") {
-      if (m.diasSemana && m.diasSemana.includes(diaSemana)) {
-        deveAlertar = true;
-      }
-    } else if (m.frequencia === "dias
+    if (m.frequencia === "diario") deveAlertar = true;
+    else if (m.frequencia === "dias_especificos" && m.diasSemana && m.diasSemana.includes(diaSemana)) deveAlertar = true;
+    else if (m.frequencia === "dias_alternados") {
+      const diasDesdeInicio = Math.floor((agora - new Date(2024, 0, 1)) / (1000 * 60 * 60 * 24));
+      if (diasDesdeInicio % (m.intervalo || 1) === 0) deveAlertar = true;
+    }
+    if (deveAlertar) alert(`🔔 HORA DO REMÉDIO!\n\n💊 ${m.nome}\n⏰ ${m.horario}`);
+  }
+}
+
+// ============================================
+// EVENTOS E INICIALIZAÇÃO
+// ============================================
+document.addEventListener("DOMContentLoaded", function() {
+  // Configurar eventos dos rádios
+  const radios = document.getElementsByName("frequencia");
+  radios.forEach(radio => {
+    radio.addEventListener("change", function() {
+      document.getElementById("diasEspecificos").style.display = this.value === "dias_especificos" ? "flex" : "none";
+      document.getElementById("diasAlternados").style.display = this.value === "dias_alternados" ? "flex" : "none";
+      atualizarTextoBotaoFrequencia();
+    });
+  });
+  
+  document.querySelectorAll('#diasEspecificos input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener("change", atualizarTextoBotaoFrequencia);
+  });
+  
+  document.getElementById("intervaloDias").addEventListener("change", function() {
+    intervaloDias = parseInt(this.value);
+    atualizarTextoBotaoFrequencia();
+  });
+  
+  carregarDados();
+  renderizarLocais();
+  setInterval(verificarHorarios, 60000);
+  if ("Notification" in window) Notification.requestPermission();
+});
+</script>
+</body>
+</html>
